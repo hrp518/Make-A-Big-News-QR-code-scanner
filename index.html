@@ -1,0 +1,239 @@
+<!DOCTYPE HTML>
+<!--
+	作者：hrp8888@outlook.com
+	时间：2017-10-02
+	描述：简单的扫描器
+-->
+<html>
+
+	<head>
+		<script>
+			document.addEventListener("plusready", onPlusReady, false);
+			// 扩展API加载完毕，现在可以正常调用扩展API
+			function onPlusReady() {
+
+			}
+		</script>
+
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+		<script src="https://cdn.bootcss.com/clipboard.js/1.7.1/clipboard.min.js">
+			new Clipboard('.btn');
+		</script>
+		<link rel="stylesheet" href="css/mui.min.css" />
+		<link rel="stylesheet" href="css/html5+.css" />
+
+		<title>hrp518-beta</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />		
+		<script src="js/jquery.min.js"></script>
+		<script src="js/config.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script type="text/javascript" src="js/mui.js"></script>
+		<script type="text/javascript" src="js/mui.min.js"></script>
+
+		<noscript>
+			<link rel="stylesheet" href="css/skel-noscript.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-desktop.css" />
+			<link rel="stylesheet" href="css/mui.min.css" />
+			<link rel="stylesheet" href="css/mui.css" />
+		</noscript>
+		<script>
+			function load() {				  
+
+			}
+		</script>
+		<!--[if lte IE 9]><link rel="stylesheet" href="css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><link rel="stylesheet" href="css/ie8.css" /><![endif]-->
+		<!--[if lte IE 7]><link rel="stylesheet" href="css/ie7.css" /><![endif]-->
+	</head>
+
+	<body onload="load()">
+		
+		<div class="mui-content">
+		    <div class="wrapper wrapper-style1 wrapper-first">
+			<article class="container" id="top">
+				<div class="row">
+					
+							<div class="4u">
+						<div id="bcid"><span class="me image image-full"><img src="LOGO.jpg" alt="" /></span></div>
+						
+						<!--
+                        	作者：hrp8888@outlook.com
+                        	时间：2017-10-02
+                        	描述：
+                        --><!--<input type='text' id='text' />-->
+
+					</div>
+					<div class="8u">
+						<header class="mui-bar mui-bar-nav">
+						    <h1 class="mui-title">扫描</h1>
+						</header>
+						</header>
+						<header>
+							<h1>搞个大新闻扫描器</h1><p>更有<strong>人生经验</strong>的扫描器</p>
+						</header>
+
+						<div id="anwser">
+							<span id="result">扫描结果</span></br><button>复制扫描结果</button>
+						</div>
+
+						<script type="text/javascript">
+							function plusready() {
+								document.getElementById("anwser").addEventListener("click", function(e) {
+									e = e.target;
+									if(e.tagName == "BUTTON") {
+										 mui.toast('已复制到粘贴板',{ duration:'short', type:'div' }) 
+										var Context = plus.android.importClass("android.content.Context");
+										var main = plus.android.runtimeMainActivity();
+										var clip = main.getSystemService(Context.CLIPBOARD_SERVICE);
+										plus.android.invoke(clip, "setText", e.previousSibling.innerHTML);
+									};
+								}, false)
+							}
+							document.addEventListener('plusready', plusready);
+						</script>
+
+						<script type="text/javascript">
+							// 扩展API加载完毕后调用onPlusReady回调函数 
+							document.addEventListener("plusready", onPlusReady, false);
+							// 扩展API加载完毕，现在可以正常调用扩展API
+							function onPlusReady() {
+								var e = document.getElementById("scan");
+								e.removeAttribute("disabled");
+							}
+							var scan = null;
+
+							function onmarked(type, result) {
+								var text = '未知: ';
+								switch(type) {
+									case plus.barcode.QR:
+										text = 'QR: ';
+										break;
+									case plus.barcode.EAN13:
+										text = 'EAN13: ';
+										break;
+									case plus.barcode.EAN8:
+										text = 'EAN8: ';
+										break;
+
+								}
+
+								function testFile() {
+									plus.runtime.openURL(result);
+								}
+								document.getElementById("result").innerHTML = result;
+
+								alert(text + result);
+								return testFile()
+							}
+
+							function galleryImg() {
+								// 从相册中选择图片
+								console.log("从相册中选择图片:");
+								plus.gallery.pick(function(path) {
+									function scanImg() {
+										plus.barcode.scan(path, function(type, result) {
+											
+											var result2=result
+											result2=result2.replace(/\"/g,"");
+											alert("扫描成功(" + type + ")" + result2)
+											document.getElementById("result").innerHTML = result2;
+											function testFiles() {
+												plus.runtime.openURL(result2);
+											}
+											return testFiles()
+										}, function(error) {
+											alert("图片错误");
+										});
+									}
+									return scanImg();
+									console.log(path);
+								}, function(e) {
+									console.log("取消选择图片");
+								}, {
+									filter: "image"
+								});
+							}
+
+							function startRecognize() {
+								scan = new plus.barcode.Barcode('bcid');
+								scan.onmarked = onmarked;
+							}
+
+							function startScan() {
+								scan.start();
+							}
+
+							function cancelScan() {
+								scan.cancel();
+							}
+
+							function setFlash() {
+								scan.setFlash();
+							}
+						</script>
+
+						<!--
+             	作者：hrp8888@outlook.com
+             	时间：2017-10-02
+             	描述：
+             <script type="text/javascript">
+        function plusready(){
+            document.getElementById("anwser").addEventListener("click",function(e){
+                e = e.target;
+                if(e.tagName == "BUTTON"){
+                    var Context = plus.android.importClass("android.content.Context");
+                    var main = plus.android.runtimeMainActivity();
+                    var clip = main.getSystemService(Context.CLIPBOARD_SERVICE);
+                    plus.android.invoke(clip,"setText",e.previousSibling.innerHTML);
+                };
+            },false)
+        }
+        document.addEventListener('plusready', plusready);
+        </script>-->
+
+						<a href="about.html" class="mui-btn" id="about">关于</a>
+						<script type="text/javascript">
+							//tap为mui封装的单击事件，可参考手势事件章节
+document.getElementById('about').addEventListener('tap', function() {
+  //打开关于页面
+  mui.openWindow({
+    url: 'about.html', 
+    id:'info'
+  });
+});
+						</script>
+					
+						
+
+						<button type="button" data-loading-icon="mui-spinner 						mui-spinner-custom" class="mui-btn" onclick="startRecognize();startScan();">开始扫描</button>
+						<button type="button" data-loading-icon="mui-spinner 						mui-spinner-custom" class="mui-btn" onclick="scan.cancel(); scan.close();">停止扫描</button>
+						
+						<button type="button" data-loading-icon="mui-spinner 						mui-spinner-custom" class="mui-icon mui-icon-image" onclick="galleryImg()"></button>
+
+					</div>
+				</div>
+			</article>
+		</div>
+
+		</div>
+
+	<!-- Nav -->
+	<!--<nav id="nav">
+			<ul>
+				<li>
+					<a href="about.html">关于</a>
+				</li>
+				
+			</ul>
+		</nav>-->
+
+		<!-- Home -->
+		
+	</body>
+	
+
+</html>

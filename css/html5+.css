@@ -1,0 +1,14 @@
+	<style type="text/css">
+*{
+	-webkit-user-select: none;
+}
+html,body{
+	margin: 0px;
+	padding: 0px;
+	height: 100%;
+}
+#bcid {
+	background:white;
+	height:360px;
+	width:auto;
+}
